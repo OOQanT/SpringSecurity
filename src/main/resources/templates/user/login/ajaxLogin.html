@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Thymeleaf Ajax POST Example</title>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    </head>
+    <body>
+
+        <div id="result">결과: </div>
+
+        <script th:inline="javascript">
+            $(document).ready(function () {
+                // 폼 전송 방지
+                $("form").submit(function (event) {
+                    event.preventDefault();
+                });
+
+                // Ajax로 POST 요청 보내기
+                $("#submitButton").click(function () {
+                    var dataToSend = {
+                        // 필요한 데이터를 추가
+                        key1: $("#inputField1").val(),
+                        key2: $("#inputField2").val()
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: "/your-post-endpoint",
+                        data: JSON.stringify(dataToSend),
+                        success: function (result) {
+                            $("#result").text("결과: " + result);
+                        },
+                        error: function (error) {
+                            console.log("에러 발생: " + error);
+                        }
+                    });
+                });
+            });
+        </script>
+
+    <!-- 폼 요소 -->
+        <form action="/api/login" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="아이디" required="required" autofocus="autofocus">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" name="password" placeholder="비밀번호" required="required">
+            </div>
+            <button type="button" id="submitButton">전송</button>
+        </form>
+
+    </body>
+</html>
